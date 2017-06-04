@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Minimal List</title>
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/main.css">
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+        $(document).ready(function () {
+
+          $("#list-items").html(localStorage.getItem("listItems"));
+
+            $(".add-items").submit(function(event){
+              event.preventDefault();
+
+              var item = $("#todo-list-item").val();
+
+              if (item){
+                $("#list-items").append("<li><input class='checkbox' type='checkbox'/>"+ item + "<a class='remove'>x</a><hr></li>");
+
+                localStorage.setItem("listItems", $("#list-items").html());
+
+                var item = $("#todo-list-item").val("");
+              }
+            });
+
+            $(document).on("change", ".checkbox", function(){
+                if($(this).attr("checked")){
+                  $(this).removeAttr("checked")
+                } else{
+                    $(this).attr("checked", "checked");
+                }
+
+                $(this).parent().toggleClass("completed");
+                localStorage.setItem("listItems", $("#list-items").html());
+            });
+
+            $(document).on("click", ".remove", function(){
+              $(this).parent().remove();
+              localStorage.setItem("listItems", $("#list-items").html());
+            })
+        });
+
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Minimal List</h1>
+            <ul id="list-items">
+            <!-- Here's where out todo list items will go! -->
+            </ul>
+            <form class="add-items">
+                <input type="text" class="form-control" id="todo-list-item" placeholder="Keep it short and sweet">
+                <button class="add" type="submit">Add to List</button>
+            </form>
+        </div>
+    </body>
+</html>
